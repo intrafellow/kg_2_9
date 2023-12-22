@@ -6,6 +6,9 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 
 import java.util.List;
 
@@ -36,9 +39,19 @@ public class Chart {
 
         series.getData().add(clickedDataPoint);
         xValues.add(x - 1.57);
-        yValues.add(y + (0.38));
-        System.out.println(x - 1.57 + " " + (y  + 0.38));
+        yValues.add(y + 0.38);
+        System.out.println(x - 1.57 + " " + (y + 0.38));
 
         recalculateAndRedrawGraph(series, xValues, yValues);
+
+// Соединяем точки линиями
+        Path path = new Path();
+        path.getElements().add(new MoveTo(xValues.get(0), yValues.get(0)));
+
+        for (int i = 1; i < xValues.size(); i++) {
+            path.getElements().add(new LineTo(xValues.get(i), yValues.get(i)));
+        }
+
+        series.nodeProperty().set(path);
     }
 }
